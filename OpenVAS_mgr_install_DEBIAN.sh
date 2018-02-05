@@ -45,7 +45,7 @@ wget -nc http://wald.intevation.org/frs/download.php/2448/openvas-manager-7.0.2.
 wget -nc http://wald.intevation.org/frs/download.php/2397/openvas-cli-1.4.5.tar.gz
 wget -nc http://wald.intevation.org/frs/download.php/2429/greenbone-security-assistant-7.0.2.tar.gz
  
-apt-get -y install dpkg-dev pkg-config libssh-dev libglib2.0-dev libpcap-dev uuid-dev bison libksba-dev sqlite3 libpopt-dev heimdal-multidev gcc-mingw-w64 cmake python-setuptools libgpgme11-dev python-paramiko libgnutls28-dev redis-server libsnmp-dev libgcrypt20-dev libldap2-dev libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc rsync gnutls-bin nmap alien nsis rpm texlive doxygen libhiredis-dev libsqlite3-dev xmltoman
+apt-get -y install net-tools dpkg-dev pkg-config libssh-dev libglib2.0-dev libpcap-dev uuid-dev bison libksba-dev sqlite3 libpopt-dev heimdal-multidev gcc-mingw-w64 cmake python-setuptools libgpgme11-dev python-paramiko libgnutls28-dev redis-server libsnmp-dev libgcrypt20-dev libldap2-dev libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc rsync gnutls-bin nmap alien nsis rpm texlive doxygen libhiredis-dev libsqlite3-dev xmltoman
  
  
 tar xzf openvas-libraries-9.0.1.tar.gz
@@ -102,6 +102,8 @@ greenbone-nvt-sync
 openvas-manage-certs -a
 openvassd
 openvasmd --rebuild
+
+openvasmd --create-user=administrator --role=Admin && openvasmd --user=administrator --new-password=Password01
 
 echo "do you wanna restart your computer to setup environment? yes(y)no(n)"
 read restart
