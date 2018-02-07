@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 # insure that the system is up to date
 apt update && apt upgrade && apt dist-upgrade
