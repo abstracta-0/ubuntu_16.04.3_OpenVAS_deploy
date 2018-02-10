@@ -10,7 +10,7 @@ mkdir /etc/OpenVAS
 path="/etc/OpenVAS"
 cd $(echo $path | tr -d '\r')
 
-wget -nc chttp://wald.intevation.org/frs/download.php/2420/openvas-libraries-9.0.1.tar.gz
+wget -nc http://wald.intevation.org/frs/download.php/2420/openvas-libraries-9.0.1.tar.gz
 wget -nc http://wald.intevation.org/frs/download.php/2423/openvas-scanner-5.1.1.tar.gz
 wget -nc http://wald.intevation.org/frs/download.php/2448/openvas-manager-7.0.2.tar.gz
 wget -nc http://wald.intevation.org/frs/download.php/2429/greenbone-security-assistant-7.0.2.tar.gz
@@ -21,3 +21,59 @@ wget -nc http://wald.intevation.org/frs/download.php/2405/ospd-debsecan-1.2b1.ta
 wget -nc http://wald.intevation.org/frs/download.php/2218/ospd-nmap-1.0b1.tar.gz
 
 for i in $(ls *.tar.gz); do tar zxvf $i; done
+
+cd openvas-libraries-9.0.1/
+mkdir build
+cd build/
+cmake ..
+make
+make install
+cd ../../
+
+cd openvas-manager-7.0.2/
+mkdir build
+cd build/
+cmake ..
+make
+make install
+cd ../../
+
+cd openvas-scanner-5.1.1/
+mkdir build
+cd build/
+cmake ..
+make
+make install
+cd ../../
+
+cd openvas-cli-1.4.5/
+mkdir build
+cd build/
+cmake ..
+make
+make install
+cd ../../
+
+cd greenbone-security-assistant-7.0.2/
+mkdir build
+cd build/
+cmake ..
+make
+make install
+cd ../../
+
+cd ospd-1.2.0/
+python setup.py build
+python setup.py install
+cd ../
+
+cd ospd-debsecan-1.2b1/
+python setup.py build
+python setup.py install
+cd ../
+
+cd ospd-nmap-1.0b1/
+python setup.py build
+python setup.py install
+cd ../
+
