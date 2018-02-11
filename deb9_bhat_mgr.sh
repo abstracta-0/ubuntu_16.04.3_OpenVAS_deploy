@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # insure that the system is up to date
-apt update && apt upgrade && apt dist-upgrade
+dhclient
+apt-get update && apt-get dist-upgrade -y
 
-apt install -y build-essential cmake bison flex libpcap-dev pkg-config libglib2.0-dev libgpgme11-dev uuid-dev sqlfairy xmltoman doxygen libssh-dev libksba-dev libldap2-dev libsqlite3-dev libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc clang rsync rpm nsis alien sqlite3 libhiredis-dev libgcrypt11-dev libgnutls28-dev redis-server texlive-latex-base texlive-latex-recommended linux-headers-$(uname -r) python python-pip mingw-w64 heimdal-multidev libpopt-dev libglib2.0-dev gnutls-bin certbot nmap ufw
+apt-get install -y build-essential cmake bison flex libpcap-dev pkg-config libglib2.0-dev libgpgme11-dev uuid-dev sqlfairy xmltoman doxygen libssh-dev libksba-dev libldap2-dev libsqlite3-dev libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc clang rsync rpm nsis alien sqlite3 libhiredis-dev libgcrypt11-dev libgnutls28-dev redis-server texlive-latex-base texlive-latex-recommended linux-headers-$(uname -r) python python-pip mingw-w64 heimdal-multidev libpopt-dev libglib2.0-dev gnutls-bin certbot nmap ufw
 
 # cleanly download and compile packages/libraries to /etc/OpenVAS
 mkdir /etc/OpenVAS
@@ -77,3 +78,40 @@ python setup.py build
 python setup.py install
 cd ../
 
+cp /etc/redis/redis.conf /etc/redis/redis.conf.bak
+sed -i 's+port 6379+port 0+' /etc/redis/redis.conf
+sed -i 's+# unixsocket /var/run/redis/redis.sock+unixsocket /var/run/redis/redis.sock+' /etc/redis/redis.conf
+
+sed -i 's+# unixsocketperm 700+unixsocketperm 700+' /etc/redis/redis.conf
+
+openvassd -s > /usr/local/etc/openvas/openvassd.conf
+cp /usr/local/etc/openvas/openvassd.conf /usr/local/etc/openvas/openvassd.conf.bak
+sed -i 's+/tmp/redis.sock+/var/run/redis/redis.sock+' /usr/local/etc/openvas/openvassd.conf
+
+# haven't verified yet
+cp /etc/systemd/system/redis.service /etc/systemd/system/redis.service.bak
+sed -i 's+PrivateTmp=yes+PrivateTmp=no+' /etc/systemd/system/redis.service
+
+
+# need to place /media/VM_Share/OpenVAS/openvas-db-update.sh in /usr/local/sbin/openvas-db-update
+
+(crontab -l 2>/dev/null; echo "0 0 * * * /usr/local/sbin/openvas-db-update.sh") | crontab -
+
+
+
+service redis-server restart
+ldconfig -v
+openvassd
+
+greenbone-nvt-sync
+greenbone-scapdata-sync
+greenbone-certdata-sync
+openvasmd --progress --rebuild
+
+# something is getting hung up here
+openvas-manage-certs -a
+
+# or hung up here???
+openvassd 
+openvasmd &
+gsad &
