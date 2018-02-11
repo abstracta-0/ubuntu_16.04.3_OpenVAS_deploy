@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # insure that the system is up to date
-dhclient
+
+#dhclient
+
 apt-get update && apt-get dist-upgrade -y
 
 apt-get install -y build-essential cmake bison flex libpcap-dev pkg-config libglib2.0-dev libgpgme11-dev uuid-dev sqlfairy xmltoman doxygen libssh-dev libksba-dev libldap2-dev libsqlite3-dev libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc clang rsync rpm nsis alien sqlite3 libhiredis-dev libgcrypt11-dev libgnutls28-dev redis-server texlive-latex-base texlive-latex-recommended linux-headers-$(uname -r) python python-pip mingw-w64 heimdal-multidev libpopt-dev libglib2.0-dev gnutls-bin certbot nmap ufw
@@ -10,6 +12,7 @@ apt-get install -y build-essential cmake bison flex libpcap-dev pkg-config libgl
 mkdir /etc/OpenVAS
 path="/etc/OpenVAS"
 cd $(echo $path | tr -d '\r')
+
 
 wget -nc http://wald.intevation.org/frs/download.php/2420/openvas-libraries-9.0.1.tar.gz
 wget -nc http://wald.intevation.org/frs/download.php/2423/openvas-scanner-5.1.1.tar.gz
@@ -88,16 +91,6 @@ openvassd -s > /usr/local/etc/openvas/openvassd.conf
 cp /usr/local/etc/openvas/openvassd.conf /usr/local/etc/openvas/openvassd.conf.bak
 sed -i 's+/tmp/redis.sock+/var/run/redis/redis.sock+' /usr/local/etc/openvas/openvassd.conf
 
-# haven't verified yet
-cp /etc/systemd/system/redis.service /etc/systemd/system/redis.service.bak
-sed -i 's+PrivateTmp=yes+PrivateTmp=no+' /etc/systemd/system/redis.service
-
-
-# need to place /media/VM_Share/OpenVAS/openvas-db-update.sh in /usr/local/sbin/openvas-db-update
-
-(crontab -l 2>/dev/null; echo "0 0 * * * /usr/local/sbin/openvas-db-update.sh") | crontab -
-
-
 
 service redis-server restart
 ldconfig -v
@@ -109,9 +102,36 @@ greenbone-certdata-sync
 openvasmd --progress --rebuild
 
 # something is getting hung up here
-openvas-manage-certs -a
+#openvas-manage-certs -a
+openvas-manage-certs -f
 
 # or hung up here???
-openvassd 
-openvasmd &
-gsad &
+openvassd
+openvasmd
+gsad
+
+
+# need to place /media/VM_Share/OpenVAS/openvas-db-update.sh in /usr/local/sbin/openvas-db-update.sh
+
+cp deb9_OpenVAS_deploy/openvas-db-update.sh /usr/local/sbin/openvas-db-update.sh
+(crontab -l 2>/dev/null; echo "0 0 * * * /usr/local/sbin/openvas-db-update.sh") | crontab -
+
+
+# cp services to correct directories
+
+cp deb9_OpenVAS_deploy/openvas-manager.service /etc/systemd/system/openvas-manager.service
+cp deb9_OpenVAS_deploy/openvas-scanner.service /etc/systemd/system/openvas-scanner.service
+cp deb9_OpenVAS_deploy/greenbone-security-assistant.service /etc/systemd/system/greenbone-security-assistant.service
+
+systemctl enable openvas-manager.service && systemctl enable openvas-scanner.service && systemctl enable greenbone-security-assistant.service
+
+# haven't verified yet
+cp /etc/systemd/system/redis.service /etc/systemd/system/redis.service.bak
+sed -i 's+PrivateTmp=yes+PrivateTmp=no+' /etc/systemd/system/redis.service
+
+# remove this && DO NOT SCRIPT!!!!!!!!!!!!!!!!!!
+openvasmd --create-user=administrator --role=Admin && openvasmd --user=administrator --new-password=Password01
+
+./openvas-check-setup --v9
+
+exit 0
