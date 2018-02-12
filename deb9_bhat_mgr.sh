@@ -9,7 +9,7 @@ apt-get update && apt-get dist-upgrade -y
 apt-get install -y net-tools build-essential cmake bison flex libpcap-dev pkg-config libglib2.0-dev libgpgme11-dev uuid-dev sqlfairy xmltoman doxygen libssh-dev libksba-dev libldap2-dev libsqlite3-dev libmicrohttpd-dev libxml2-dev libxslt1-dev xsltproc clang rsync rpm nsis alien sqlite3 libhiredis-dev libgcrypt11-dev libgnutls28-dev redis-server texlive-latex-base texlive-latex-recommended linux-headers-$(uname -r) python python-pip mingw-w64 heimdal-multidev libpopt-dev libglib2.0-dev gnutls-bin certbot nmap ufw
 
 # cleanly download and compile packages/libraries to /etc/OpenVAS
-# mkdir /etc/OpenVAS
+mkdir /etc/OpenVAS
 path="/etc/OpenVAS"
 cd $(echo $path | tr -d '\r')
 
@@ -100,16 +100,13 @@ greenbone-nvt-sync
 greenbone-scapdata-sync
 greenbone-certdata-sync
 
-when do i need to start openvassd?
+#when do i need to start openvassd?
 openvassd
 openvasmd --progress --rebuild
 
 # something is getting hung up here
 openvas-manage-certs -fa
 
-
-
-# need to place /media/VM_Share/OpenVAS/openvas-db-update.sh in /usr/local/sbin/openvas-db-update.sh
 
 cp /media/VM_Share/OpenVAS/deb9_OpenVAS_deploy/openvas-db-update.sh /usr/local/sbin/openvas-db-update.sh
 (crontab -l 2>/dev/null; echo "0 0 * * * /usr/local/sbin/openvas-db-update.sh") | crontab -
