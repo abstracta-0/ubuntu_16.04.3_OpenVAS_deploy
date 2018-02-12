@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sed -i 's/deb cdrom/# deb cdrom/g' /etc/apt/sources.list
+
 apt-get update && apt-get dist-upgrade -y && apt-get install git
 
 cd ~ 
@@ -10,4 +12,4 @@ cd deb9_OpenVAS_deploy
 
 chmod +x *
 
-./deb9_OpenVAS_deploy > install.log
+./deb9_OpenVAS_deploy |& tee install.log
