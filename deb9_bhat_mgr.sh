@@ -136,6 +136,4 @@ openvasmd --progress --rebuild
 
 /media/VM_Share/OpenVAS/deb9_OpenVAS_deploy/openvas-check-setup.sh --v9
 
-gsad
-
-exit
+reboot
