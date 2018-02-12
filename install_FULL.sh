@@ -17,4 +17,4 @@ cd deb9_OpenVAS_deploy
 
 chmod +x *
 
-/bin/bash deb9_OpenVAS_deploy |& tee install.log
+/bin/bash /etc/OpenVAS/deb9_OpenVAS_deploy/deb9_bhat_mgr.sh |& tee install.log
