@@ -109,8 +109,11 @@ openvas-manage-certs -fa
 
 
 cp /media/VM_Share/OpenVAS/deb9_OpenVAS_deploy/openvas-db-update.sh /usr/local/sbin/openvas-db-update.sh
+
 (crontab -l 2>/dev/null; echo "0 0 * * * /usr/local/sbin/openvas-db-update.sh") | crontab -
 
+# need to check if this adds to the end of crontab or not!!!
+(crontab -l 2>/dev/null; echo "0 0 * * * apt-get update && apt-get dist-upgrade -y") | crontab -
 
 # cp services to correct directories
 
