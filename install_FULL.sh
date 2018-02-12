@@ -6,6 +6,7 @@ mkdir /etc/OpenVAS
 path2="/etc/OpenVAS"
 cd $(echo $path2 | tr -d '\r')
 
+cp /etc/apt/sources.list /etc/apt/sources.list.bak
 sed -i 's/deb cdrom/# deb cdrom/g' /etc/apt/sources.list
 
 apt-get update && apt-get dist-upgrade -y && apt-get install git
