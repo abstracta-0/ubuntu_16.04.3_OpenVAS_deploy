@@ -1,10 +1,13 @@
 #!/bin/bash
 
+mkdir /etc/OpenVAS
+path="/etc/OpenVAS"
+cd $(echo $path | tr -d '\r')
+
 sed -i 's/deb cdrom/# deb cdrom/g' /etc/apt/sources.list
 
 apt-get update && apt-get dist-upgrade -y && apt-get install git
 
-cd ~ 
 
 git clone https://github.com/abstracta-0/deb9_OpenVAS_deploy.git
 
@@ -12,4 +15,4 @@ cd deb9_OpenVAS_deploy
 
 chmod +x *
 
-./deb9_OpenVAS_deploy |& tee install.log
+/bin/bash deb9_OpenVAS_deploy |& tee install.log
