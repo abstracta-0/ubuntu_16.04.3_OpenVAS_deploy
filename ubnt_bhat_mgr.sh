@@ -100,10 +100,6 @@ greenbone-nvt-sync
 greenbone-scapdata-sync
 greenbone-certdata-sync
 
-#when do i need to start openvassd?
-openvassd
-#openvasmd --progress --rebuild
-
 # something is getting hung up here
 openvas-manage-certs -fa
 
@@ -133,8 +129,8 @@ sed -i 's+#!/^.{8,}$/+!/^.{8,}$/+' /usr/local/etc/openvas/pwpolicy.conf
 #openvasmd --user=administrator --new-password=!Password01!
 
 # or hung up here???
-openvassd
-#openvasmd
+openvassd &
+openvasmd &
 #gsad
 
 # does this need to go after "openvas-manage-certs -fa"
