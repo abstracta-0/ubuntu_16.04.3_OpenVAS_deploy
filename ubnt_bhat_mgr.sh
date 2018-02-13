@@ -102,7 +102,7 @@ greenbone-certdata-sync
 
 #when do i need to start openvassd?
 openvassd
-openvasmd --progress --rebuild
+#openvasmd --progress --rebuild
 
 # something is getting hung up here
 openvas-manage-certs -fa
@@ -137,7 +137,7 @@ openvasmd
 gsad
 
 # does this need to go after "openvas-manage-certs -fa"
-#openvasmd --progress --rebuild
+openvasmd --progress --rebuild
 
 /etc/OpenVAS/ubuntu_16.04.3_OpenVAS_deploy/openvas-check-setup.sh --v9
 
