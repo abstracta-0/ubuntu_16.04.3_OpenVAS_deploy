@@ -134,8 +134,8 @@ sed -i 's+#!/^.{8,}$/+!/^.{8,}$/+' /usr/local/etc/openvas/pwpolicy.conf
 
 # or hung up here???
 openvassd
-openvasmd
-gsad
+#openvasmd
+#gsad
 
 # does this need to go after "openvas-manage-certs -fa"
 openvasmd --progress --rebuild
