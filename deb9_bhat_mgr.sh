@@ -126,6 +126,8 @@ systemctl enable openvas-manager.service && systemctl enable openvas-scanner.ser
 cp /etc/systemd/system/redis.service /etc/systemd/system/redis.service.bak
 sed -i 's+PrivateTmp=yes+PrivateTmp=no+' /etc/systemd/system/redis.service
 
+sed -i 's+#!/^.{8,}$/+!/^.{8,}$/+' /usr/local/etc/openvas/pwpolicy.conf
+
 # remove this && DO NOT SCRIPT!!!!!!!!!!!!!!!!!!
 openvasmd --create-user=administrator --role=Admin && openvasmd --user=administrator --new-password=Password01
 
