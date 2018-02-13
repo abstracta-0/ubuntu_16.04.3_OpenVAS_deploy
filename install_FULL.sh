@@ -11,7 +11,7 @@ apt-get update && apt-get dist-upgrade -y && apt-get install git
 
 git clone https://github.com/abstracta-0/ubuntu_16.04.3_OpenVAS_deploy.git
 
-cd deb9_OpenVAS_deploy
+cd ubuntu_16.04.3_OpenVAS_deploy
 
 chmod +x *
 
