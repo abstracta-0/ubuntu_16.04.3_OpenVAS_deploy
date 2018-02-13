@@ -135,7 +135,7 @@ openvasmd
 gsad
 
 # does this need to go after "openvas-manage-certs -fa"
-openvasmd --progress --rebuild
+#openvasmd --progress --rebuild
 
 /etc/OpenVAS/deb9_OpenVAS_deploy/openvas-check-setup.sh --v9
 
