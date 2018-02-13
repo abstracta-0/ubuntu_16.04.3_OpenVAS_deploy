@@ -138,6 +138,18 @@ openvasmd &
 # does this need to go after "openvas-manage-certs -fa"
 openvasmd --progress --rebuild
 
+# redis-server background save may fail under low memory condition, changing to "1"
+cp /etc/sysctl.conf /etc/sysctl.conf.bak
+echo 'vm.overcommit_memory = 1' >> /etc/sysctl.conf
+sysctl vm.overcommit_memory=1
+
+# fix latency issues with redis-server
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+cp /etc/rc.local /etc/rc.local.bak
+sed -i 's+exit 0+echo never > /sys/kernel/mm/transparent_hugepage/enabled+' /etc/rc.local
+echo 'exit 0' >> /etc/rc.local
+
+
 /etc/OpenVAS/ubuntu_16.04.3_OpenVAS_deploy/openvas-check-setup.sh --v9
 
 reboot
