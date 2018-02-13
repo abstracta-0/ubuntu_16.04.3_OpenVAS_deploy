@@ -108,7 +108,7 @@ openvasmd --progress --rebuild
 openvas-manage-certs -fa
 
 
-cp /etc/OpenVAS/deb9_OpenVAS_deploy/openvas-db-update.sh /usr/local/sbin/openvas-db-update.sh
+cp /etc/OpenVAS/ubuntu_16.04.3_OpenVAS_deploy/openvas-db-update.sh /usr/local/sbin/openvas-db-update.sh
 
 (crontab -l 2>/dev/null; echo "0 0 * * * /usr/local/sbin/openvas-db-update.sh") | crontab -
 
@@ -117,9 +117,9 @@ cp /etc/OpenVAS/deb9_OpenVAS_deploy/openvas-db-update.sh /usr/local/sbin/openvas
 
 # cp services to correct directories
 
-cp /etc/OpenVAS/deb9_OpenVAS_deploy/openvas-manager.service /etc/systemd/system/openvas-manager.service
-cp /etc/OpenVAS/deb9_OpenVAS_deploy/openvas-scanner.service /etc/systemd/system/openvas-scanner.service
-cp /etc/OpenVAS/deb9_OpenVAS_deploy/greenbone-security-assistant.service /etc/systemd/system/greenbone-security-assistant.service
+cp /etc/OpenVAS/ubuntu_16.04.3_OpenVAS_deploy/openvas-manager.service /etc/systemd/system/openvas-manager.service
+cp /etc/OpenVAS/ubuntu_16.04.3_OpenVAS_deploy/openvas-scanner.service /etc/systemd/system/openvas-scanner.service
+cp /etc/OpenVAS/ubuntu_16.04.3_OpenVAS_deploy/greenbone-security-assistant.service /etc/systemd/system/greenbone-security-assistant.service
 
 systemctl enable openvas-manager.service && systemctl enable openvas-scanner.service && systemctl enable greenbone-security-assistant.service
 
@@ -139,6 +139,6 @@ gsad
 # does this need to go after "openvas-manage-certs -fa"
 #openvasmd --progress --rebuild
 
-/etc/OpenVAS/deb9_OpenVAS_deploy/openvas-check-setup.sh --v9
+/etc/OpenVAS/ubuntu_16.04.3_OpenVAS_deploy/openvas-check-setup.sh --v9
 
 reboot
