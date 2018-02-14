@@ -147,6 +147,8 @@ sysctl vm.overcommit_memory=1
 echo never > /sys/kernel/mm/transparent_hugepage/enabled
 cp /etc/rc.local /etc/rc.local.bak
 sed -i 's+exit 0+echo never > /sys/kernel/mm/transparent_hugepage/enabled+' /etc/rc.local
+echo 'sysctl -w net.core.somaxconn=65535' >> /etc/rc.local
+echo 'openvasmd --listen=127.0.0.1 --port=9391' >> /etc/rc.local
 echo 'exit 0' >> /etc/rc.local
 
 
